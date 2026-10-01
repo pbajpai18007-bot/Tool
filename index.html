@@ -78,7 +78,7 @@
       gap: 8px;
     }
 
-    /* Music Section */
+    /* Video Player Section */
     .input-group {
       display: flex;
       gap: 8px;
@@ -120,12 +120,12 @@
       font-size: 0.78rem;
       color: var(--text-muted);
       margin-bottom: 10px;
+      min-height: 18px;
     }
 
-    /* Compact YT Music Player Bar (No big video, pure music look) */
-    .music-bar-box {
+    .video-box {
       width: 100%;
-      height: 140px;
+      height: 250px;
       border-radius: 12px;
       overflow: hidden;
       background: #000;
@@ -136,30 +136,6 @@
       width: 100%;
       height: 100%;
       border: none;
-    }
-
-    /* Quick Chips */
-    .quick-chips {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      margin-top: 12px;
-    }
-
-    .chip {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 5px 12px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      cursor: pointer;
-      color: var(--text-muted);
-      transition: 0.2s;
-    }
-
-    .chip:hover {
-      background: var(--accent);
-      color: #fff;
     }
 
     /* Meme Section */
@@ -243,34 +219,27 @@
 
   <header>
     <h1>Vibe Lounge & Chill Zone 🎧</h1>
-    <p>Apna manpasand track search karo, desi memes dekho aur chill karo!</p>
+    <p>Apna manpasand song ya video search karo, desi memes dekho aur chill karo!</p>
   </header>
 
   <div class="container">
     
-    <!-- Music Player Card -->
+    <!-- Video Player Card -->
     <div class="card">
-      <h2>🎵 YT Music Stream Player</h2>
+      <h2>🎬 Video Player</h2>
       <div class="input-group">
-        <input type="text" id="songQuery" placeholder="Gaane ka naam (e.g. Kesariya, 295 Sidhu)..." onkeypress="handleSongKey(event)">
-        <button id="searchBtn" onclick="searchMusic()">Load Song</button>
+        <input type="text" id="songQuery" placeholder="Koi bhi gaana ya video search karo..." onkeypress="handleSongKey(event)">
+        <button id="searchBtn" onclick="searchVideo()">Play</button>
       </div>
-      <div class="status-note" id="musicStatus">Search karke red play button tap karein direct sound aayega.</div>
+      <div class="status-note" id="musicStatus">Search karke video play karein.</div>
 
-      <!-- Compact Audio-Sized Player Bar -->
-      <div class="music-bar-box">
-        <iframe id="ytPlayer" 
+      <!-- Full-Size Video Player Container -->
+      <div class="video-box">
+        <iframe id="videoPlayer" 
           src="https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=0&enablejsapi=1" 
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
           allowfullscreen>
         </iframe>
-      </div>
-
-      <div class="quick-chips">
-        <span class="chip" onclick="quickPlay('Kesariya official audio')">🔥 Kesariya</span>
-        <span class="chip" onclick="quickPlay('Sidhu Moosewala 295 official audio')">🚀 295 Sidhu</span>
-        <span class="chip" onclick="quickPlay('Dil Nu AP Dhillon official audio')">✨ Dil Nu</span>
-        <span class="chip" onclick="quickPlay('Lofi hindi chill songs 2026')">🌙 Hindi Lofi</span>
       </div>
     </div>
 
@@ -289,7 +258,7 @@
     <div class="card">
       <h2>✨ AI Mood Buddy</h2>
       <div class="chat-box" id="chatBox">
-        <div class="msg bot">Yo Prakhar! Sab smooth set hai. Song load karo, player me tap karo aur desi memes ke sath chill karo! 🎧</div>
+        <div class="msg bot">Yo Prakhar! Sab smooth set hai. Video lagao, desi memes scroll karo aur full relax karo! 🎧</div>
       </div>
       <div class="input-group">
         <input type="text" id="userInput" placeholder="AI se kuch baat karo..." onkeypress="handleChatKey(event)">
@@ -305,65 +274,60 @@
   </footer>
 
   <script>
-    // 1. YT MUSIC STREAM LOGIC (NO BACKGROUND BLOCK, DIRECT SOUND)
+    // 1. VIDEO SEARCH & PLAY ENGINE
     function handleSongKey(e) {
-      if (e.key === 'Enter') searchMusic();
+      if (e.key === 'Enter') searchVideo();
     }
 
-    function quickPlay(songName) {
-      document.getElementById('songQuery').value = songName;
-      searchMusic();
-    }
-
-    async function searchMusic() {
+    async function searchVideo() {
       const query = document.getElementById('songQuery').value.trim();
-      const player = document.getElementById('ytPlayer');
+      const player = document.getElementById('videoPlayer');
       const status = document.getElementById('musicStatus');
       const btn = document.getElementById('searchBtn');
 
       if (!query) {
-        alert('Pehle gaane ka naam likho!');
+        alert('Pehle gaane ya video ka naam likho!');
         return;
       }
 
       btn.innerText = 'Finding... ⏳';
-      status.innerText = `Searching YouTube Music for "${query}"...`;
+      status.innerText = `Searching video for "${query}"...`;
 
-      // Direct YouTube / YT Music URL Check
+      // Direct YouTube Link Detection
       if (query.includes('youtube.com') || query.includes('youtu.be')) {
         let videoId = '';
-        if (query.includes('watch?v=' || query.includes('&v='))) {
-          videoId = query.split('v=')[1].split('&')[0];
+        if (query.includes('watch?v=')) {
+          videoId = query.split('watch?v=')[1].split('&')[0];
         } else if (query.includes('youtu.be/')) {
           videoId = query.split('youtu.be/')[1].split('?')[0];
         }
         if (videoId) {
           player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-          status.innerText = 'Playing directly!';
-          btn.innerText = 'Load Song';
+          status.innerText = 'Playing direct link!';
+          btn.innerText = 'Play';
           return;
         }
       }
 
-      // Fast track search
+      // Fast API Video Resolver
       try {
-        const res = await fetch(`https://pipedapi.kavin.rocks/search?q=${encodeURIComponent(query + ' official audio')}&filter=videos`, { signal: AbortSignal.timeout(3500) });
+        const res = await fetch(`https://pipedapi.kavin.rocks/search?q=${encodeURIComponent(query)}&filter=videos`, { signal: AbortSignal.timeout(3500) });
         const data = await res.json();
         if (data.items && data.items.length > 0) {
           const videoId = data.items[0].url.replace('/watch?v=', '');
           player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-          status.innerText = `Loaded: ${data.items[0].title}. Tap Play button agar autoplay pause ho!`;
-          btn.innerText = 'Load Song';
+          status.innerText = `Now Playing: ${data.items[0].title}`;
+          btn.innerText = 'Play';
           return;
         }
       } catch (err) {
-        console.log('Using query embed mode...');
+        console.log('Using query fallback...');
       }
 
-      // Fallback
-      player.src = `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(query + ' audio')}&autoplay=1`;
-      status.innerText = `Loaded results for "${query}". Player me tap karein direct sound aayega!`;
-      btn.innerText = 'Load Song';
+      // Universal Search Embed Fallback
+      player.src = `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(query)}&autoplay=1`;
+      status.innerText = `Loaded results for "${query}". Tap to play!`;
+      btn.innerText = 'Play';
     }
 
     // 2. DESI MEME FETCH
@@ -448,16 +412,16 @@
 
     function getChillResponse(msg) {
       const low = msg.toLowerCase();
-      if (low.includes('song') || low.includes('gana')) {
-        return "Left side me track ka naam daal kar 'Load Song' dabao, player bar me full track bajega!";
+      if (low.includes('song') || low.includes('gana') || low.includes('video')) {
+        return "Left side me bas video/song ka naam search karo, player me full HD chalega!";
       } else if (low.includes('meme') || low.includes('hasao')) {
         return "'Next Meme' dabao, mast desi memes ready hain!";
       } else if (low.includes('hi') || low.includes('hello')) {
-        return "Arre bro! Kaisa scene hai? Full vibe mode on rakho.";
+        return "Arre brother! Kaisa chal raha hai? Full chill vibe on rakho.";
       } else {
         const vibes = [
           "Bole toh ekdum rapchik mahol hai!",
-          "Bas mast track chalao aur relax raho.",
+          "Bas mast video enjoy karo aur chill raho.",
           "Life me break aur chill bohot zaroori hai dost ☕",
           "Meme check karo, kaafi funny hai!"
         ];
