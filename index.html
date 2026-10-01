@@ -1,3 +1,351 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Chill Zone 🎧</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0b0d17;
+      --card-bg: rgba(22, 27, 46, 0.75);
+      --accent: #8b5cf6;
+      --accent-hover: #7c3aed;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at 15% 15%, #1e1b4b, var(--bg-dark));
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(45deg, #a78bfa, #f472b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+      width: 100%;
+      max-width: 1100px;
+      flex: 1;
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.45);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card h2 {
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Music Player Section */
+    .input-group {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(0, 0, 0, 0.35);
+      color: #fff;
+      outline: none;
+      font-size: 0.9rem;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+    }
+
+    button {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    button:hover {
+      background: var(--accent-hover);
+    }
+
+    .audio-player-box {
+      width: 100%;
+      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.35);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .song-poster {
+      width: 90px;
+      height: 90px;
+      border-radius: 12px;
+      object-fit: cover;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+      margin-bottom: 10px;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .song-details h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      max-width: 250px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #fff;
+    }
+
+    .song-details p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      max-width: 250px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    audio {
+      width: 100%;
+      height: 40px;
+      outline: none;
+      border-radius: 30px;
+    }
+
+    .quick-chips {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .chip {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: 0.2s;
+    }
+
+    .chip:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    /* Meme Section */
+    .meme-box {
+      min-height: 250px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-radius: 10px;
+      background: rgba(0,0,0,0.3);
+      padding: 10px;
+    }
+
+    .meme-box img {
+      max-width: 100%;
+      max-height: 240px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .meme-title {
+      font-size: 0.85rem;
+      margin-top: 10px;
+      color: var(--text-muted);
+      text-align: center;
+      font-weight: 500;
+    }
+
+    /* AI Chat Section */
+    .chat-box {
+      height: 240px;
+      overflow-y: auto;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 12px;
+      background: rgba(0, 0, 0, 0.3);
+      margin-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 0.88rem;
+    }
+
+    .msg {
+      padding: 9px 13px;
+      border-radius: 8px;
+      max-width: 82%;
+      line-height: 1.4;
+    }
+
+    .msg.bot {
+      background: rgba(139, 92, 246, 0.25);
+      border-left: 3px solid var(--accent);
+      align-self: flex-start;
+    }
+
+    .msg.user {
+      background: rgba(255, 255, 255, 0.12);
+      align-self: flex-end;
+    }
+
+    /* Footer Signature */
+    footer {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+    }
+
+    footer span.author {
+      color: #f472b6;
+      font-weight: 600;
+      text-shadow: 0 0 10px rgba(244, 114, 182, 0.4);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Vibe Lounge & Chill Zone 🎧</h1>
+    <p>Direct pure full audio bajao, Indian memes scroll karo aur chill karo!</p>
+  </header>
+
+  <div class="container">
+    
+    <!-- Pure Full Audio Player Card -->
+    <div class="card">
+      <h2>🎵 Full Song Audio Player</h2>
+      <div class="input-group">
+        <input type="text" id="songQuery" placeholder="Song ka naam likho (e.g. Kesariya, 295, Dil Nu)..." onkeypress="handleSongKey(event)">
+        <button id="searchBtn" onclick="searchAudio()">Play Song</button>
+      </div>
+
+      <div class="audio-player-box">
+        <img id="poster" class="song-poster" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=200&h=200&fit=crop" alt="Cover">
+        <div class="song-details">
+          <h3 id="songTitle">Chill Vibes Lofi</h3>
+          <p id="songArtist">Prakhar's Lounge</p>
+        </div>
+        
+        <!-- Standard HTML5 Audio Tag (Direct Sound Guaranteed) -->
+        <audio id="audioPlayer" controls preload="metadata">
+          <source id="audioSrc" src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
+          Aapka browser audio support nahi karta.
+        </audio>
+      </div>
+
+      <div class="quick-chips">
+        <span class="chip" onclick="quickPlay('Kesariya')">🔥 Kesariya</span>
+        <span class="chip" onclick="quickPlay('295 Sidhu Moosewala')">🚀 295 Sidhu</span>
+        <span class="chip" onclick="quickPlay('Dil Nu AP Dhillon')">✨ Dil Nu</span>
+        <span class="chip" onclick="quickPlay('Kahani Suno 2.0')">🌙 Kahani Suno</span>
+      </div>
+    </div>
+
+    <!-- Indian Memes Card -->
+    <div class="card">
+      <h2>🇮🇳 Desi Memes</h2>
+      <div class="meme-box" id="memeBox">
+        <p id="memeLoading">Fresh Desi Meme load ho raha hai...</p>
+        <img id="memeImg" src="" alt="Desi Meme" style="display:none;">
+        <div id="memeTitle" class="meme-title"></div>
+      </div>
+      <button style="margin-top: 12px; width: 100%;" onclick="fetchDesiMeme()">Next Meme 😂</button>
+    </div>
+
+    <!-- AI Chill Bot Card -->
+    <div class="card">
+      <h2>✨ AI Mood Buddy</h2>
+      <div class="chat-box" id="chatBox">
+        <div class="msg bot">Yo Prakhar! Sab mast set hai. Pure audio suno, desi memes scroll karo aur full relax karo! 🎧</div>
+      </div>
+      <div class="input-group">
+        <input type="text" id="userInput" placeholder="AI se kuch baat karo..." onkeypress="handleChatKey(event)">
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Signature Footer -->
+  <footer>
+    Made with ❤️ by <span class="author">Prakhar</span>
+  </footer>
+
+  <script>
+    // 1. FULL MP3 AUDIO STREAM ENGINE (YouTube Proxy + Backup)
+    function handleSongKey(e) {
+      if (e.key === 'Enter') searchAudio();
+    }
+
+    function quickPlay(songName) {
+      document.getElementById('songQuery').value = songName;
+      searchAudio();
+    }
+
     async function searchAudio() {
       const query = document.getElementById('songQuery').value.trim();
       const btn = document.getElementById('searchBtn');
@@ -17,7 +365,7 @@
 
       let foundSong = false;
 
-      // ENGINE 1: YouTube Audio Proxy (Guaranteed Full Song & No 30s limit)
+      // ENGINE 1: YouTube Audio Proxy (Guaranteed Full Song)
       const pipedApis = [
         'https://pipedapi.kavin.rocks',
         'https://pipedapi.smnz.de',
@@ -28,28 +376,25 @@
         if (foundSong) break;
 
         try {
-          // 1. YouTube par gaana search karega
+          // 1. Search YouTube for official audio
           const searchRes = await fetch(`${api}/search?q=${encodeURIComponent(query + ' official audio')}&filter=all`);
           const searchData = await searchRes.json();
 
           if (searchData.items && searchData.items.length > 0) {
-            // Pehla streamable video track nikalna
             const track = searchData.items.find(item => item.type === 'stream');
             if (!track) continue;
 
-            // Video ID extract karna (e.g., /watch?v=xyz123)
             const videoId = track.url.split('v=')[1] || track.url.replace('/watch?v=', '');
             
             songTitle.innerText = track.title;
             songArtist.innerText = track.uploaderName || "YouTube Audio";
             poster.src = track.thumbnail;
 
-            // 2. Us video ka direct high-quality Audio Stream URL nikalna
+            // 2. Extract direct Audio Stream
             const streamRes = await fetch(`${api}/streams/${videoId}`);
             const streamData = await streamRes.json();
 
             if (streamData.audioStreams && streamData.audioStreams.length > 0) {
-              // Sabse best audio bitrate select karna
               const bestAudio = streamData.audioStreams.sort((a, b) => b.bitrate - a.bitrate)[0];
 
               audio.src = bestAudio.url;
@@ -69,7 +414,7 @@
         }
       }
 
-      // ENGINE 2: JioSaavn Latest Backup (Agar YouTube proxy slow ho)
+      // ENGINE 2: JioSaavn Latest Backup (Fallback)
       if (!foundSong) {
         try {
           const saavnRes = await fetch(`https://saavn.dev/api/search/songs?query=${encodeURIComponent(query)}`);
@@ -109,3 +454,109 @@
 
       btn.innerText = 'Play Song';
     }
+
+    // 2. DESI MEME FETCH
+    const indianSubreddits = ['IndianDankMemes', 'DesiMemeCentral', 'IndianMeyMeys'];
+
+    async function fetchDesiMeme() {
+      const memeImg = document.getElementById('memeImg');
+      const memeTitle = document.getElementById('memeTitle');
+      const memeLoading = document.getElementById('memeLoading');
+
+      memeLoading.style.display = 'block';
+      memeLoading.innerText = 'Desi meme load ho raha hai...';
+      memeImg.style.display = 'none';
+      memeTitle.innerText = '';
+
+      const randomSub = indianSubreddits[Math.floor(Math.random() * indianSubreddits.length)];
+
+      try {
+        const res = await fetch(`https://meme-api.com/gimme/${randomSub}`);
+        const data = await res.json();
+        
+        if (data.url) {
+          memeImg.src = data.url;
+          memeTitle.innerText = data.title || "Desi Meme";
+          memeImg.onload = () => {
+            memeLoading.style.display = 'none';
+            memeImg.style.display = 'block';
+          };
+        } else {
+          fallbackMeme();
+        }
+      } catch (err) {
+        fallbackMeme();
+      }
+    }
+
+    async function fallbackMeme() {
+      try {
+        const res = await fetch('https://meme-api.com/gimme');
+        const data = await res.json();
+        const memeImg = document.getElementById('memeImg');
+        const memeTitle = document.getElementById('memeTitle');
+        const memeLoading = document.getElementById('memeLoading');
+
+        memeImg.src = data.url;
+        memeTitle.innerText = data.title;
+        memeLoading.style.display = 'none';
+        memeImg.style.display = 'block';
+      } catch {
+        document.getElementById('memeLoading').innerText = 'Meme load nahi hua, "Next Meme" dabayein!';
+      }
+    }
+
+    // 3. AI CHAT
+    function handleChatKey(e) {
+      if (e.key === 'Enter') sendMessage();
+    }
+
+    function sendMessage() {
+      const input = document.getElementById('userInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const chatBox = document.getElementById('chatBox');
+
+      const userDiv = document.createElement('div');
+      userDiv.className = 'msg user';
+      userDiv.innerText = text;
+      chatBox.appendChild(userDiv);
+      input.value = '';
+
+      setTimeout(() => {
+        const botDiv = document.createElement('div');
+        botDiv.className = 'msg bot';
+        botDiv.innerText = getChillResponse(text);
+        chatBox.appendChild(botDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }, 400);
+
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function getChillResponse(msg) {
+      const low = msg.toLowerCase();
+      if (low.includes('song') || low.includes('gana')) {
+        return "Left side me bas koi bhi song ka naam daalo aur Play Song dabao, full audio mast bajega!";
+      } else if (low.includes('meme') || low.includes('hasao')) {
+        return "'Next Meme' dabao, ek se badhkar ek desi memes ready hain!";
+      } else if (low.includes('hi') || low.includes('hello')) {
+        return "Arre brother! Kaisa scene hai? Chill zone me full enjoy karo.";
+      } else {
+        const vibes = [
+          "Bole toh ekdum rapchik mahol hai!",
+          "Bas mast gaana suno aur bina video ke full sound ka maza lo.",
+          "Life me break aur chill bohot zaroori hai dost ☕",
+          "Next meme dekho, kaafi funny hai!"
+        ];
+        return vibes[Math.floor(Math.random() * vibes.length)];
+      }
+    }
+
+    window.onload = () => {
+      fetchDesiMeme();
+    };
+  </script>
+</body>
+</html>
