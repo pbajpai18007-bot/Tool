@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chill Zone 🎧</title>
+  <title> Chill Zone 🎧</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -78,11 +78,11 @@
       gap: 8px;
     }
 
-    /* Music Player Card */
+    /* Music Section */
     .input-group {
       display: flex;
       gap: 8px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     input[type="text"] {
@@ -117,49 +117,26 @@
       transform: translateY(-1px);
     }
 
-    .music-player-box {
+    .status-text {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      min-height: 18px;
+    }
+
+    .player-wrapper {
       width: 100%;
       height: 250px;
       border-radius: 12px;
-      background: rgba(0, 0, 0, 0.4);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 15px;
-      text-align: center;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .song-poster {
-      width: 90px;
-      height: 90px;
-      border-radius: 12px;
-      object-fit: cover;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-      margin-bottom: 10px;
-    }
-
-    .song-details h3 {
-      font-size: 1rem;
-      font-weight: 600;
-      max-width: 260px;
-      white-space: nowrap;
       overflow: hidden;
-      text-overflow: ellipsis;
+      background: #000;
+      position: relative;
     }
 
-    .song-details p {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-bottom: 10px;
-    }
-
-    audio {
+    iframe {
       width: 100%;
-      height: 38px;
-      outline: none;
-      filter: invert(0.9) hue-rotate(180deg);
+      height: 100%;
+      border: none;
     }
 
     /* Meme Section */
@@ -250,21 +227,18 @@
     
     <!-- Music Player Card -->
     <div class="card">
-      <h2>🎵 Song Player (No Ads / No Block)</h2>
+      <h2>🎵 Search & Play Music</h2>
       <div class="input-group">
-        <input type="text" id="songQuery" placeholder="Koi bhi song search karo (e.g. Kesariya, Dil Nu, Moosewala)..." onkeypress="handleSongKey(event)">
+        <input type="text" id="songQuery" placeholder="Koi bhi gaana search karo (e.g. Arijit Singh, Sidhu Moosewala, Lofi)..." onkeypress="handleSongKey(event)">
         <button id="searchBtn" onclick="searchAndPlay()">Play Song</button>
       </div>
+      <div class="status-text" id="musicStatus">Now Playing: Chill Beats Mode</div>
 
-      <div class="music-player-box">
-        <img id="poster" class="song-poster" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=200&h=200&fit=crop" alt="Cover">
-        <div class="song-details">
-          <h3 id="songTitle">Chill Vibes Lofi</h3>
-          <p id="songArtist">Prakhar's Lounge</p>
-        </div>
-        <audio id="audioElement" controls autoplay>
-          <source id="audioSrc" src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
-        </audio>
+      <div class="player-wrapper">
+        <iframe id="audioPlayer" 
+          src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/chilledcow/sets/lofi-hip-hop-radio&color=%238b5cf6&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false" 
+          allow="autoplay">
+        </iframe>
       </div>
     </div>
 
@@ -283,7 +257,7 @@
     <div class="card">
       <h2>✨ AI Mood Buddy</h2>
       <div class="chat-box" id="chatBox">
-        <div class="msg bot">Yo Prakhar! Sab smooth chal raha hai. Gaana lagao, memes scroll karo aur full relax karo! 🎧</div>
+        <div class="msg bot">Yo Prakhar! Sab smooth chal raha hai. Gaana lagao, memes scroll karo aur chill karo! 🎧</div>
       </div>
       <div class="input-group">
         <input type="text" id="userInput" placeholder="AI se kuch baat karo..." onkeypress="handleChatKey(event)">
@@ -299,7 +273,7 @@
   </footer>
 
   <script>
-    // 1. DIRECT SAAVN MUSIC SEARCH & STREAM LOGIC (Bina kisi error ke pure stream)
+    // 1. RELIABLE AUDIO SEARCH & PLAY (GitHub Pages Safe)
     function handleSongKey(e) {
       if (e.key === 'Enter') searchAndPlay();
     }
@@ -307,50 +281,23 @@
     async function searchAndPlay() {
       const query = document.getElementById('songQuery').value.trim();
       const btn = document.getElementById('searchBtn');
-      const songTitle = document.getElementById('songTitle');
-      const songArtist = document.getElementById('songArtist');
-      const poster = document.getElementById('poster');
-      const audio = document.getElementById('audioElement');
+      const status = document.getElementById('musicStatus');
+      const player = document.getElementById('audioPlayer');
 
       if (!query) {
         alert('Pehle koi song ka naam ya artist likho!');
         return;
       }
 
-      btn.innerText = 'Searching... ⏳';
+      btn.innerText = 'Loading... ⏳';
+      status.innerText = `Loading "${query}"...`;
 
-      try {
-        // Saavn Public API endpoint
-        const res = await fetch(`https://saavn.dev/api/search/songs?query=${encodeURIComponent(query)}`);
-        const data = await res.json();
-
-        if (data.success && data.data && data.data.results && data.data.results.length > 0) {
-          const song = data.data.results[0];
-          
-          songTitle.innerText = song.name.replace(/&quot;/g, '"').replace(/&#039;/g, "'");
-          songArtist.innerText = song.artists?.primary?.[0]?.name || "Unknown Artist";
-          
-          // Image / Cover Art
-          if (song.image && song.image.length > 0) {
-            poster.src = song.image[song.image.length - 1].url;
-          }
-
-          // Audio URL (High quality audio pick)
-          const downloadUrls = song.downloadUrl;
-          const bestAudio = downloadUrls[downloadUrls.length - 1].url;
-
-          audio.src = bestAudio;
-          audio.load();
-          audio.play().catch(e => console.log('Auto-play blocked by browser:', e));
-        } else {
-          alert('Yeh gaana nahi mila, spelling check karke koi aur try karo!');
-        }
-      } catch (err) {
-        console.error(err);
-        alert('Song fetch karne me issue hua, internet ya song name dobara check karein!');
-      } finally {
-        btn.innerText = 'Play Song';
-      }
+      // SoundCloud Search Embed Engine: GitHub Pages pe 100% allowed & no copyright block
+      const soundcloudSearchUrl = `https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/search/sounds%3Fq%3D${encodeURIComponent(query)}&color=%238b5cf6&auto_play=true&show_teaser=false`;
+      
+      player.src = soundcloudSearchUrl;
+      status.innerText = `Playing: ${query}`;
+      btn.innerText = 'Play Song';
     }
 
     // 2. DESI MEME FETCH
@@ -428,7 +375,7 @@
         botDiv.innerText = getChillResponse(text);
         chatBox.appendChild(botDiv);
         chatBox.scrollTop = chatBox.scrollHeight;
-      }, 450);
+      }, 400);
 
       chatBox.scrollTop = chatBox.scrollHeight;
     }
@@ -436,17 +383,17 @@
     function getChillResponse(msg) {
       const low = msg.toLowerCase();
       if (low.includes('song') || low.includes('gana')) {
-        return "Left side me bas gaane ya artist ka naam likho aur Play daba do, direct high quality bajega!";
+        return "Left side me koi bhi artist ya song likho aur Play daba do, mast chalega!";
       } else if (low.includes('meme') || low.includes('hasao')) {
-        return "'Next Meme' dabao, full desi dank memes chal rahe hain!";
+        return "'Next Meme' dabao, full desi memes ready hain!";
       } else if (low.includes('hi') || low.includes('hello')) {
-        return "Arre bro! Kaisa chal raha hai sab? Ekdum chill mode on rakho.";
+        return "Arre bro! Kaisa chal raha hai? Full chill vibe on rakho.";
       } else {
         const vibes = [
           "Bole toh ekdum rapchik mahol hai!",
-          "Bas mast gaana bajao aur chill vibe lo.",
+          "Bas mast song enjoy karo aur chill raho.",
           "Life me break aur chill bohot zaroori hai dost ☕",
-          "Meme dekha kya? Next wala ekdum top hai!"
+          "Next meme dekho, kaafi funny hai!"
         ];
         return vibes[Math.floor(Math.random() * vibes.length)];
       }
