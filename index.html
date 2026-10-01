@@ -78,11 +78,11 @@
       gap: 8px;
     }
 
-    /* Music Player Section */
+    /* Music Section */
     .input-group {
       display: flex;
       gap: 8px;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
 
     input[type="text"] {
@@ -116,67 +116,40 @@
       background: var(--accent-hover);
     }
 
-    .audio-player-box {
-      width: 100%;
-      border-radius: 12px;
-      background: rgba(0, 0, 0, 0.35);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      text-align: center;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .song-poster {
-      width: 90px;
-      height: 90px;
-      border-radius: 12px;
-      object-fit: cover;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
-      margin-bottom: 10px;
-      border: 2px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .song-details h3 {
-      font-size: 1rem;
-      font-weight: 600;
-      max-width: 250px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      color: #fff;
-    }
-
-    .song-details p {
-      font-size: 0.8rem;
+    .status-note {
+      font-size: 0.78rem;
       color: var(--text-muted);
-      margin-bottom: 12px;
-      max-width: 250px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      margin-bottom: 10px;
     }
 
-    audio {
+    /* Compact YT Music Player Bar (No big video, pure music look) */
+    .music-bar-box {
       width: 100%;
-      height: 40px;
-      outline: none;
-      border-radius: 30px;
+      height: 140px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #000;
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Quick Chips */
     .quick-chips {
       display: flex;
       gap: 6px;
       flex-wrap: wrap;
-      margin-top: 10px;
+      margin-top: 12px;
     }
 
     .chip {
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 4px 10px;
+      padding: 5px 12px;
       border-radius: 20px;
       font-size: 0.75rem;
       cursor: pointer;
@@ -270,38 +243,34 @@
 
   <header>
     <h1>Vibe Lounge & Chill Zone 🎧</h1>
-    <p>Direct pure full audio bajao, Indian memes scroll karo aur chill karo!</p>
+    <p>Apna manpasand track search karo, desi memes dekho aur chill karo!</p>
   </header>
 
   <div class="container">
     
-    <!-- Pure Full Audio Player Card -->
+    <!-- Music Player Card -->
     <div class="card">
-      <h2>🎵 Full Song Audio Player</h2>
+      <h2>🎵 YT Music Stream Player</h2>
       <div class="input-group">
-        <input type="text" id="songQuery" placeholder="Song ka naam likho (e.g. Kesariya, 295, Dil Nu)..." onkeypress="handleSongKey(event)">
-        <button id="searchBtn" onclick="searchAudio()">Play Song</button>
+        <input type="text" id="songQuery" placeholder="Gaane ka naam (e.g. Kesariya, 295 Sidhu)..." onkeypress="handleSongKey(event)">
+        <button id="searchBtn" onclick="searchMusic()">Load Song</button>
       </div>
+      <div class="status-note" id="musicStatus">Search karke red play button tap karein direct sound aayega.</div>
 
-      <div class="audio-player-box">
-        <img id="poster" class="song-poster" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=200&h=200&fit=crop" alt="Cover">
-        <div class="song-details">
-          <h3 id="songTitle">Chill Vibes Lofi</h3>
-          <p id="songArtist">Prakhar's Lounge</p>
-        </div>
-        
-        <!-- Standard HTML5 Audio Tag (Direct Sound Guaranteed) -->
-        <audio id="audioPlayer" controls preload="metadata">
-          <source id="audioSrc" src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
-          Aapka browser audio support nahi karta.
-        </audio>
+      <!-- Compact Audio-Sized Player Bar -->
+      <div class="music-bar-box">
+        <iframe id="ytPlayer" 
+          src="https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=0&enablejsapi=1" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+          allowfullscreen>
+        </iframe>
       </div>
 
       <div class="quick-chips">
-        <span class="chip" onclick="quickPlay('Kesariya')">🔥 Kesariya</span>
-        <span class="chip" onclick="quickPlay('295 Sidhu Moosewala')">🚀 295 Sidhu</span>
-        <span class="chip" onclick="quickPlay('Dil Nu AP Dhillon')">✨ Dil Nu</span>
-        <span class="chip" onclick="quickPlay('Kahani Suno 2.0')">🌙 Kahani Suno</span>
+        <span class="chip" onclick="quickPlay('Kesariya official audio')">🔥 Kesariya</span>
+        <span class="chip" onclick="quickPlay('Sidhu Moosewala 295 official audio')">🚀 295 Sidhu</span>
+        <span class="chip" onclick="quickPlay('Dil Nu AP Dhillon official audio')">✨ Dil Nu</span>
+        <span class="chip" onclick="quickPlay('Lofi hindi chill songs 2026')">🌙 Hindi Lofi</span>
       </div>
     </div>
 
@@ -320,7 +289,7 @@
     <div class="card">
       <h2>✨ AI Mood Buddy</h2>
       <div class="chat-box" id="chatBox">
-        <div class="msg bot">Yo Prakhar! Sab mast set hai. Pure audio suno, desi memes scroll karo aur full relax karo! 🎧</div>
+        <div class="msg bot">Yo Prakhar! Sab smooth set hai. Song load karo, player me tap karo aur desi memes ke sath chill karo! 🎧</div>
       </div>
       <div class="input-group">
         <input type="text" id="userInput" placeholder="AI se kuch baat karo..." onkeypress="handleChatKey(event)">
@@ -336,123 +305,65 @@
   </footer>
 
   <script>
-    // 1. FULL MP3 AUDIO STREAM ENGINE (YouTube Proxy + Backup)
+    // 1. YT MUSIC STREAM LOGIC (NO BACKGROUND BLOCK, DIRECT SOUND)
     function handleSongKey(e) {
-      if (e.key === 'Enter') searchAudio();
+      if (e.key === 'Enter') searchMusic();
     }
 
     function quickPlay(songName) {
       document.getElementById('songQuery').value = songName;
-      searchAudio();
+      searchMusic();
     }
 
-    async function searchAudio() {
+    async function searchMusic() {
       const query = document.getElementById('songQuery').value.trim();
+      const player = document.getElementById('ytPlayer');
+      const status = document.getElementById('musicStatus');
       const btn = document.getElementById('searchBtn');
-      const songTitle = document.getElementById('songTitle');
-      const songArtist = document.getElementById('songArtist');
-      const poster = document.getElementById('poster');
-      const audio = document.getElementById('audioPlayer');
 
       if (!query) {
         alert('Pehle gaane ka naam likho!');
         return;
       }
 
-      btn.innerText = 'Searching... ⏳';
-      songTitle.innerText = "Finding full song...";
-      songArtist.innerText = query;
+      btn.innerText = 'Finding... ⏳';
+      status.innerText = `Searching YouTube Music for "${query}"...`;
 
-      let foundSong = false;
-
-      // ENGINE 1: YouTube Audio Proxy (Guaranteed Full Song)
-      const pipedApis = [
-        'https://pipedapi.kavin.rocks',
-        'https://pipedapi.smnz.de',
-        'https://pipedapi.tokhmi.xyz'
-      ];
-
-      for (const api of pipedApis) {
-        if (foundSong) break;
-
-        try {
-          // 1. Search YouTube for official audio
-          const searchRes = await fetch(`${api}/search?q=${encodeURIComponent(query + ' official audio')}&filter=all`);
-          const searchData = await searchRes.json();
-
-          if (searchData.items && searchData.items.length > 0) {
-            const track = searchData.items.find(item => item.type === 'stream');
-            if (!track) continue;
-
-            const videoId = track.url.split('v=')[1] || track.url.replace('/watch?v=', '');
-            
-            songTitle.innerText = track.title;
-            songArtist.innerText = track.uploaderName || "YouTube Audio";
-            poster.src = track.thumbnail;
-
-            // 2. Extract direct Audio Stream
-            const streamRes = await fetch(`${api}/streams/${videoId}`);
-            const streamData = await streamRes.json();
-
-            if (streamData.audioStreams && streamData.audioStreams.length > 0) {
-              const bestAudio = streamData.audioStreams.sort((a, b) => b.bitrate - a.bitrate)[0];
-
-              audio.src = bestAudio.url;
-              audio.load();
-              
-              const playPromise = audio.play();
-              if (playPromise !== undefined) {
-                playPromise.catch(() => {
-                  songArtist.innerText = "Click Play Button Below ▶";
-                });
-              }
-              foundSong = true;
-            }
-          }
-        } catch (e) {
-          console.log("YouTube API failed, trying next...", e);
+      // Direct YouTube / YT Music URL Check
+      if (query.includes('youtube.com') || query.includes('youtu.be')) {
+        let videoId = '';
+        if (query.includes('watch?v=' || query.includes('&v='))) {
+          videoId = query.split('v=')[1].split('&')[0];
+        } else if (query.includes('youtu.be/')) {
+          videoId = query.split('youtu.be/')[1].split('?')[0];
+        }
+        if (videoId) {
+          player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+          status.innerText = 'Playing directly!';
+          btn.innerText = 'Load Song';
+          return;
         }
       }
 
-      // ENGINE 2: JioSaavn Latest Backup (Fallback)
-      if (!foundSong) {
-        try {
-          const saavnRes = await fetch(`https://saavn.dev/api/search/songs?query=${encodeURIComponent(query)}`);
-          const saavnData = await saavnRes.json();
-          
-          const list = saavnData?.data?.results || [];
-          if (list.length > 0) {
-            const track = list[0];
-            songTitle.innerText = track.name.replace(/&quot;/g, '"').replace(/&#039;/g, "'").replace(/&amp;/g, "&");
-            songArtist.innerText = track.primaryArtists || track.singers || "Top Track";
-            poster.src = track.image[track.image.length - 1]?.url || track.image[0]?.url;
-
-            let streamUrl = track.downloadUrl[track.downloadUrl.length - 1]?.url;
-            
-            if (streamUrl) {
-              audio.src = streamUrl;
-              audio.load();
-              const playPromise = audio.play();
-              if (playPromise !== undefined) {
-                playPromise.catch(() => {
-                  songArtist.innerText = "Click Play Button Below ▶";
-                });
-              }
-              foundSong = true;
-            }
-          }
-        } catch (e) {
-          console.log("Saavn Fallback Failed: ", e);
+      // Fast track search
+      try {
+        const res = await fetch(`https://pipedapi.kavin.rocks/search?q=${encodeURIComponent(query + ' official audio')}&filter=videos`, { signal: AbortSignal.timeout(3500) });
+        const data = await res.json();
+        if (data.items && data.items.length > 0) {
+          const videoId = data.items[0].url.replace('/watch?v=', '');
+          player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+          status.innerText = `Loaded: ${data.items[0].title}. Tap Play button agar autoplay pause ho!`;
+          btn.innerText = 'Load Song';
+          return;
         }
+      } catch (err) {
+        console.log('Using query embed mode...');
       }
 
-      if (!foundSong) {
-        alert("गाना नहीं मिल पाया। कृपया स्पेलिंग चेक करें या कोई दूसरा गाना ट्राई करें!");
-        songTitle.innerText = "Song not found";
-        songArtist.innerText = "Try another search";
-      }
-
-      btn.innerText = 'Play Song';
+      // Fallback
+      player.src = `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(query + ' audio')}&autoplay=1`;
+      status.innerText = `Loaded results for "${query}". Player me tap karein direct sound aayega!`;
+      btn.innerText = 'Load Song';
     }
 
     // 2. DESI MEME FETCH
@@ -538,17 +449,17 @@
     function getChillResponse(msg) {
       const low = msg.toLowerCase();
       if (low.includes('song') || low.includes('gana')) {
-        return "Left side me bas koi bhi song ka naam daalo aur Play Song dabao, full audio mast bajega!";
+        return "Left side me track ka naam daal kar 'Load Song' dabao, player bar me full track bajega!";
       } else if (low.includes('meme') || low.includes('hasao')) {
-        return "'Next Meme' dabao, ek se badhkar ek desi memes ready hain!";
+        return "'Next Meme' dabao, mast desi memes ready hain!";
       } else if (low.includes('hi') || low.includes('hello')) {
-        return "Arre brother! Kaisa scene hai? Chill zone me full enjoy karo.";
+        return "Arre bro! Kaisa scene hai? Full vibe mode on rakho.";
       } else {
         const vibes = [
           "Bole toh ekdum rapchik mahol hai!",
-          "Bas mast gaana suno aur bina video ke full sound ka maza lo.",
+          "Bas mast track chalao aur relax raho.",
           "Life me break aur chill bohot zaroori hai dost ☕",
-          "Next meme dekho, kaafi funny hai!"
+          "Meme check karo, kaafi funny hai!"
         ];
         return vibes[Math.floor(Math.random() * vibes.length)];
       }
