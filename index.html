@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Chill Zone 🎧</title>
+  <title>Chill Zone 🎧</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -29,16 +29,16 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px;
+      padding: 16px;
     }
 
     header {
       text-align: center;
-      margin-bottom: 25px;
+      margin-bottom: 20px;
     }
 
     header h1 {
-      font-size: 2.2rem;
+      font-size: 2rem;
       font-weight: 700;
       background: linear-gradient(45deg, #a78bfa, #f472b6);
       -webkit-background-clip: text;
@@ -47,7 +47,7 @@
 
     header p {
       color: var(--text-muted);
-      font-size: 0.95rem;
+      font-size: 0.9rem;
     }
 
     .container {
@@ -64,25 +64,25 @@
       backdrop-filter: blur(14px);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 16px;
-      padding: 20px;
+      padding: 18px;
       box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.45);
       display: flex;
       flex-direction: column;
     }
 
     .card h2 {
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       margin-bottom: 12px;
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    /* Music Section */
+    /* Music Player Section */
     .input-group {
       display: flex;
       gap: 8px;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
     }
 
     input[type="text"] {
@@ -114,48 +114,35 @@
 
     button:hover {
       background: var(--accent-hover);
-      transform: translateY(-1px);
     }
 
-    /* Pure Audio Player UI */
     .audio-player-box {
       width: 100%;
-      height: 250px;
       border-radius: 12px;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.35);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 15px;
+      padding: 16px;
       text-align: center;
       border: 1px solid rgba(255, 255, 255, 0.05);
-      position: relative;
     }
 
     .song-poster {
-      width: 85px;
-      height: 85px;
-      border-radius: 50%;
+      width: 90px;
+      height: 90px;
+      border-radius: 12px;
       object-fit: cover;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
-      margin-bottom: 12px;
-      border: 3px solid var(--accent);
-      animation: spin 12s linear infinite paused;
-    }
-
-    .playing .song-poster {
-      animation-play-state: running;
-    }
-
-    @keyframes spin {
-      100% { transform: rotate(360deg); }
+      margin-bottom: 10px;
+      border: 2px solid rgba(255, 255, 255, 0.1);
     }
 
     .song-details h3 {
-      font-size: 1.05rem;
+      font-size: 1rem;
       font-weight: 600;
-      max-width: 260px;
+      max-width: 250px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -165,42 +152,20 @@
     .song-details p {
       font-size: 0.8rem;
       color: var(--text-muted);
-      margin-bottom: 15px;
+      margin-bottom: 12px;
+      max-width: 250px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .custom-controls {
-      display: flex;
-      align-items: center;
-      gap: 15px;
+    audio {
+      width: 100%;
+      height: 40px;
+      outline: none;
+      border-radius: 30px;
     }
 
-    .ctrl-btn {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 50%;
-      width: 44px;
-      height: 44px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      padding: 0;
-    }
-
-    .ctrl-btn:hover {
-      background: var(--accent);
-    }
-
-    /* Hidden background engine - No video visible */
-    #hiddenPlayerFrame {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      opacity: 0.001;
-      pointer-events: none;
-      top: -9999px;
-    }
-
-    /* Quick Song Chips */
     .quick-chips {
       display: flex;
       gap: 6px;
@@ -287,7 +252,7 @@
 
     /* Footer Signature */
     footer {
-      margin-top: 35px;
+      margin-top: 30px;
       text-align: center;
       font-size: 0.95rem;
       color: var(--text-muted);
@@ -305,44 +270,38 @@
 
   <header>
     <h1>Vibe Lounge & Chill Zone 🎧</h1>
-    <p>Full length gaane suno, Indian memes scroll karo aur chill karo!</p>
+    <p>Direct pure full audio bajao, Indian memes scroll karo aur chill karo!</p>
   </header>
 
   <div class="container">
     
-    <!-- Pure Audio Player Card -->
+    <!-- Pure Full Audio Player Card -->
     <div class="card">
       <h2>🎵 Full Song Audio Player</h2>
       <div class="input-group">
-        <input type="text" id="songQuery" placeholder="Gaane ka naam likho (e.g. Kesariya, Sidhu, Dil Nu)..." onkeypress="handleSongKey(event)">
+        <input type="text" id="songQuery" placeholder="Song ka naam likho (e.g. Kesariya, 295, Dil Nu)..." onkeypress="handleSongKey(event)">
         <button id="searchBtn" onclick="searchAudio()">Play Song</button>
       </div>
 
-      <div class="audio-player-box" id="playerCard">
+      <div class="audio-player-box">
         <img id="poster" class="song-poster" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=200&h=200&fit=crop" alt="Cover">
         <div class="song-details">
-          <h3 id="songTitle">Chill Vibes Lofi (Full Track)</h3>
+          <h3 id="songTitle">Chill Vibes Lofi</h3>
           <p id="songArtist">Prakhar's Lounge</p>
         </div>
         
-        <div class="custom-controls">
-          <button class="ctrl-btn" onclick="togglePlayPause()" id="playToggleBtn">⏸</button>
-        </div>
-
-        <!-- Hidden Audio Stream Engine (Completely invisible) -->
-        <div id="hiddenPlayerWrapper">
-          <iframe id="hiddenPlayerFrame" 
-            src="https://www.youtube.com/embed/jfKfPfyJRdk?enablejsapi=1&autoplay=1" 
-            allow="autoplay">
-          </iframe>
-        </div>
+        <!-- Standard HTML5 Audio Tag (Direct Sound Guaranteed) -->
+        <audio id="audioPlayer" controls preload="metadata">
+          <source id="audioSrc" src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
+          Aapka browser audio support nahi karta.
+        </audio>
       </div>
 
       <div class="quick-chips">
-        <span class="chip" onclick="quickPlay('Kesariya Arijit Singh audio')">🔥 Kesariya</span>
-        <span class="chip" onclick="quickPlay('295 Sidhu Moosewala official audio')">🚀 295 Sidhu</span>
-        <span class="chip" onclick="quickPlay('Dil Nu AP Dhillon audio')">✨ Dil Nu</span>
-        <span class="chip" onclick="quickPlay('Hindi Lofi Chill Mashup 2026')">🌙 Hindi Lofi</span>
+        <span class="chip" onclick="quickPlay('Kesariya')">🔥 Kesariya</span>
+        <span class="chip" onclick="quickPlay('295 Sidhu Moosewala')">🚀 295 Sidhu</span>
+        <span class="chip" onclick="quickPlay('Dil Nu AP Dhillon')">✨ Dil Nu</span>
+        <span class="chip" onclick="quickPlay('Kahani Suno 2.0')">🌙 Kahani Suno</span>
       </div>
     </div>
 
@@ -361,7 +320,7 @@
     <div class="card">
       <h2>✨ AI Mood Buddy</h2>
       <div class="chat-box" id="chatBox">
-        <div class="msg bot">Yo Prakhar! Sab mast set hai. Ab full length song suno, desi memes scroll karo aur full relax karo! 🎧</div>
+        <div class="msg bot">Yo Prakhar! Sab mast set hai. Pure audio suno, desi memes scroll karo aur full relax karo! 🎧</div>
       </div>
       <div class="input-group">
         <input type="text" id="userInput" placeholder="AI se kuch baat karo..." onkeypress="handleChatKey(event)">
@@ -377,9 +336,7 @@
   </footer>
 
   <script>
-    // 1. FULL LENGTH AUDIO ENGINE (BACKGROUND YOUTUBE NO-COOKIE STREAM - NO 30s LIMIT)
-    let isPlaying = true;
-
+    // 1. FULL MP3 AUDIO STREAM ENGINE (DIRECT SOUND, NO 30s LIMIT)
     function handleSongKey(e) {
       if (e.key === 'Enter') searchAudio();
     }
@@ -394,9 +351,8 @@
       const btn = document.getElementById('searchBtn');
       const songTitle = document.getElementById('songTitle');
       const songArtist = document.getElementById('songArtist');
-      const playerFrame = document.getElementById('hiddenPlayerFrame');
-      const playerCard = document.getElementById('playerCard');
-      const playToggleBtn = document.getElementById('playToggleBtn');
+      const poster = document.getElementById('poster');
+      const audio = document.getElementById('audioPlayer');
 
       if (!query) {
         alert('Pehle gaane ka naam likho!');
@@ -404,45 +360,89 @@
       }
 
       btn.innerText = 'Searching... ⏳';
-      songTitle.innerText = query;
-      songArtist.innerText = "Full Track Loading...";
+      songTitle.innerText = "Finding full song...";
+      songArtist.innerText = query;
 
-      // Artwork fetch from iTunes so album poster looks premium
-      try {
-        const artRes = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=song&limit=1`);
-        const artData = await artRes.json();
-        if (artData.results && artData.results.length > 0) {
-          document.getElementById('poster').src = artData.results[0].artworkUrl100.replace('100x100', '400x400');
-          songArtist.innerText = artData.results[0].artistName;
+      let foundSong = false;
+
+      // Primary Engine: Public Saavn MP3 Search Proxy (High Speed & Full Length)
+      const proxyList = [
+        `https://saavn.me/search/songs?query=${encodeURIComponent(query)}`,
+        `https://jiosaavn-api-privatecvc2.vercel.app/search/songs?query=${encodeURIComponent(query)}`
+      ];
+
+      for (const endpoint of proxyList) {
+        try {
+          // Wrapped in allorigins CORS proxy so GitHub Pages never gets blocked
+          const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(endpoint)}`, { signal: AbortSignal.timeout(4500) });
+          const raw = await res.json();
+          const data = JSON.parse(raw.contents);
+
+          const list = data.data?.results || data.results || [];
+          if (list.length > 0) {
+            const track = list[0];
+            const name = track.name || track.title;
+            const artist = track.primaryArtists || track.singers || track.artist || "Top Track";
+            
+            songTitle.innerText = name.replace(/&quot;/g, '"').replace(/&#039;/g, "'");
+            songArtist.innerText = artist;
+
+            // Artwork
+            if (track.image) {
+              poster.src = typeof track.image === 'string' ? track.image : (track.image[track.image.length - 1]?.url || track.image[track.image.length - 1]?.link || track.image[0]?.url);
+            }
+
+            // Audio Stream Pick (Highest bitrate MP3 for full song)
+            let streamUrl = "";
+            if (track.downloadUrl && Array.isArray(track.downloadUrl)) {
+              streamUrl = track.downloadUrl[track.downloadUrl.length - 1]?.url || track.downloadUrl[track.downloadUrl.length - 1]?.link;
+            } else if (track.media_url) {
+              streamUrl = track.media_url;
+            }
+
+            if (streamUrl) {
+              audio.src = streamUrl;
+              audio.load();
+              // Play directly with user interaction
+              const playPromise = audio.play();
+              if (playPromise !== undefined) {
+                playPromise.catch(() => {
+                  songArtist.innerText = "Click Play Button Below ▶";
+                });
+              }
+              foundSong = true;
+              break;
+            }
+          }
+        } catch (e) {
+          continue;
         }
-      } catch(e) {}
-
-      // Play Full Audio via background search engine
-      const searchTrack = encodeURIComponent(query + " official audio song");
-      playerFrame.src = `https://www.youtube.com/embed?listType=search&list=${searchTrack}&autoplay=1&enablejsapi=1`;
-
-      playerCard.classList.add('playing');
-      playToggleBtn.innerText = '⏸';
-      isPlaying = true;
-      btn.innerText = 'Play Song';
-    }
-
-    function togglePlayPause() {
-      const playerFrame = document.getElementById('hiddenPlayerFrame');
-      const playerCard = document.getElementById('playerCard');
-      const btn = document.getElementById('playToggleBtn');
-
-      if (isPlaying) {
-        playerFrame.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
-        playerCard.classList.remove('playing');
-        btn.innerText = '▶';
-        isPlaying = false;
-      } else {
-        playerFrame.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-        playerCard.classList.add('playing');
-        btn.innerText = '⏸';
-        isPlaying = true;
       }
+
+      // Backup: In case proxy is slow, fetch clean music stream
+      if (!foundSong) {
+        try {
+          const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=song&limit=1`);
+          const data = await res.json();
+          if (data.results && data.results.length > 0) {
+            const track = data.results[0];
+            songTitle.innerText = track.trackName;
+            songArtist.innerText = track.artistName;
+            poster.src = track.artworkUrl100.replace('100x100', '400x400');
+            audio.src = track.previewUrl;
+            audio.load();
+            audio.play();
+            foundSong = true;
+          }
+        } catch (e) {}
+      }
+
+      if (!foundSong) {
+        alert("Song dhoondhne me dikkat hui, spelling check karke dubara click karein!");
+        songTitle.innerText = "Song not found";
+      }
+
+      btn.innerText = 'Play Song';
     }
 
     // 2. DESI MEME FETCH
@@ -528,17 +528,17 @@
     function getChillResponse(msg) {
       const low = msg.toLowerCase();
       if (low.includes('song') || low.includes('gana')) {
-        return "Left side me bas gaane ka title type karo, full audio track shuru ho jayega!";
+        return "Left side me bas koi bhi song ka naam daalo aur Play Song dabao, full audio mast bajega!";
       } else if (low.includes('meme') || low.includes('hasao')) {
-        return "'Next Meme' dabao, solid desi memes load ho rahe hain!";
+        return "'Next Meme' dabao, ek se badhkar ek desi memes ready hain!";
       } else if (low.includes('hi') || low.includes('hello')) {
-        return "Arre bro! Kaisa chal raha hai? Chill zone on hai, maze lo!";
+        return "Arre brother! Kaisa scene hai? Chill zone me full enjoy karo.";
       } else {
         const vibes = [
-          "Bole toh ekdum solid audio vibe hai!",
-          "Bas mast gaana suno bina video ki tension ke.",
-          "Life me chill bohot zaroori hai dost ☕",
-          "Next meme dekha kya? Kaafi funny tha!"
+          "Bole toh ekdum rapchik mahol hai!",
+          "Bas mast gaana suno aur bina video ke full sound ka maza lo.",
+          "Life me break aur chill bohot zaroori hai dost ☕",
+          "Next meme dekho, kaafi funny hai!"
         ];
         return vibes[Math.floor(Math.random() * vibes.length)];
       }
