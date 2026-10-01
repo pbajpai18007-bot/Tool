@@ -126,11 +126,10 @@
 
     .player-wrapper {
       width: 100%;
-      height: 250px;
+      height: 260px;
       border-radius: 12px;
       overflow: hidden;
-      background: #000;
-      position: relative;
+      background: #121212;
     }
 
     iframe {
@@ -229,15 +228,16 @@
     <div class="card">
       <h2>🎵 Search & Play Music</h2>
       <div class="input-group">
-        <input type="text" id="songQuery" placeholder="Koi bhi gaana search karo (e.g. Arijit Singh, Sidhu Moosewala, Lofi)..." onkeypress="handleSongKey(event)">
+        <input type="text" id="songQuery" placeholder="Gaana ya Artist search karo (e.g. Kesariya, Arijit, Sidhu)..." onkeypress="handleSongKey(event)">
         <button id="searchBtn" onclick="searchAndPlay()">Play Song</button>
       </div>
-      <div class="status-text" id="musicStatus">Now Playing: Chill Beats Mode</div>
+      <div class="status-text" id="musicStatus">Now Playing: Top Desi Chill Mix</div>
 
       <div class="player-wrapper">
         <iframe id="audioPlayer" 
-          src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/chilledcow/sets/lofi-hip-hop-radio&color=%238b5cf6&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false" 
-          allow="autoplay">
+          src="https://open.spotify.com/embed/playlist/37i9dQZF1DX0XUfTFmNBRM?utm_source=generator&theme=0" 
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+          loading="lazy">
         </iframe>
       </div>
     </div>
@@ -273,14 +273,13 @@
   </footer>
 
   <script>
-    // 1. RELIABLE AUDIO SEARCH & PLAY (GitHub Pages Safe)
+    // 1. SPOTIFY UNIVERSAL SEARCH & PLAY (Zero Block / High Stability)
     function handleSongKey(e) {
       if (e.key === 'Enter') searchAndPlay();
     }
 
-    async function searchAndPlay() {
+    function searchAndPlay() {
       const query = document.getElementById('songQuery').value.trim();
-      const btn = document.getElementById('searchBtn');
       const status = document.getElementById('musicStatus');
       const player = document.getElementById('audioPlayer');
 
@@ -289,15 +288,13 @@
         return;
       }
 
-      btn.innerText = 'Loading... ⏳';
-      status.innerText = `Loading "${query}"...`;
+      status.innerText = `Loading "${query}" on Spotify Player...`;
 
-      // SoundCloud Search Embed Engine: GitHub Pages pe 100% allowed & no copyright block
-      const soundcloudSearchUrl = `https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/search/sounds%3Fq%3D${encodeURIComponent(query)}&color=%238b5cf6&auto_play=true&show_teaser=false`;
+      // Spotify Search Embed - direct search query resolve karta hai bina kisi domain error ke
+      const spotifyUrl = `https://open.spotify.com/embed/search/${encodeURIComponent(query)}?utm_source=generator&theme=0`;
       
-      player.src = soundcloudSearchUrl;
-      status.innerText = `Playing: ${query}`;
-      btn.innerText = 'Play Song';
+      player.src = spotifyUrl;
+      status.innerText = `Playing search results for: ${query}`;
     }
 
     // 2. DESI MEME FETCH
@@ -383,17 +380,17 @@
     function getChillResponse(msg) {
       const low = msg.toLowerCase();
       if (low.includes('song') || low.includes('gana')) {
-        return "Left side me koi bhi artist ya song likho aur Play daba do, mast chalega!";
+        return "Search box me gaane ka naam daalo, Spotify player me turant loaded mil jayega!";
       } else if (low.includes('meme') || low.includes('hasao')) {
-        return "'Next Meme' dabao, full desi memes ready hain!";
+        return "'Next Meme' dabao, full desi memes scroll karo!";
       } else if (low.includes('hi') || low.includes('hello')) {
         return "Arre bro! Kaisa chal raha hai? Full chill vibe on rakho.";
       } else {
         const vibes = [
           "Bole toh ekdum rapchik mahol hai!",
-          "Bas mast song enjoy karo aur chill raho.",
+          "Bas mast gaana suno aur chill vibe lo.",
           "Life me break aur chill bohot zaroori hai dost ☕",
-          "Next meme dekho, kaafi funny hai!"
+          "Next meme dekha kya? Hilarious tha bhai!"
         ];
         return vibes[Math.floor(Math.random() * vibes.length)];
       }
