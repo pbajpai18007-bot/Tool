@@ -1,361 +1,346 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="hi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>StudioChroma - AI & Clarity Photo Lab</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <title>AI Chill Zone 🎧</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Plus Jakarta Sans', sans-serif; }
-    .checkerboard {
-      background-image: linear-gradient(45deg, #1e293b 25%, transparent 25%), 
-                        linear-gradient(-45deg, #1e293b 25%, transparent 25%), 
-                        linear-gradient(45deg, transparent 75%, #1e293b 75%), 
-                        linear-gradient(-45deg, transparent 75%, #1e293b 75%);
-      background-size: 20px 20px;
-      background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+    :root {
+      --bg-dark: #0f111a;
+      --card-bg: rgba(25, 28, 44, 0.7);
+      --accent: #8b5cf6;
+      --accent-hover: #7c3aed;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at 20% 20%, #1e1b4b, var(--bg-dark));
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    header h1 {
+      font-size: 2.2rem;
+      background: linear-gradient(45deg, #a78bfa, #f472b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+      width: 100%;
+      max-width: 1100px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card h2 {
+      font-size: 1.25rem;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Music Section */
+    .input-group {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(0, 0, 0, 0.25);
+      color: #fff;
+      outline: none;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+    }
+
+    button {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: var(--accent-hover);
+    }
+
+    .player-box {
+      width: 100%;
+      height: 220px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #000;
+      margin-top: 10px;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Meme Section */
+    .meme-box {
+      min-height: 260px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-radius: 10px;
+      background: rgba(0,0,0,0.2);
+      padding: 10px;
+    }
+
+    .meme-box img {
+      max-width: 100%;
+      max-height: 250px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .meme-title {
+      font-size: 0.9rem;
+      margin-top: 10px;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* AI Chat Section */
+    .chat-box {
+      height: 220px;
+      overflow-y: auto;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.2);
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 0.88rem;
+    }
+
+    .msg {
+      padding: 8px 12px;
+      border-radius: 8px;
+      max-width: 80%;
+      line-height: 1.4;
+    }
+
+    .msg.bot {
+      background: rgba(139, 92, 246, 0.2);
+      border-left: 3px solid var(--accent);
+      align-self: flex-start;
+    }
+
+    .msg.user {
+      background: rgba(255, 255, 255, 0.1);
+      align-self: flex-end;
     }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col">
+<body>
 
-  <!-- Header -->
-  <header class="border-b border-slate-800 bg-slate-900/70 backdrop-blur sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-      <div class="flex items-center space-x-2">
-        <span class="text-2xl">✨</span>
-        <h1 class="text-xl font-bold bg-gradient-to-r from-emerald-400 via-teal-300 to-sky-400 bg-clip-text text-transparent">
-          StudioChroma
-        </h1>
-        <span class="text-xs px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Client-First</span>
-      </div>
-      <div class="flex items-center gap-3">
-        <label for="imageUpload" class="cursor-pointer px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-semibold transition shadow-lg shadow-indigo-600/20">
-          📁 Open Image
-        </label>
-        <input type="file" id="imageUpload" accept="image/*" class="hidden" onchange="handleImage(event)">
-        <button onclick="downloadImage()" id="downloadBtn" disabled class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 disabled:cursor-not-allowed rounded-lg text-sm font-semibold transition">
-          💾 Save HD
-        </button>
-      </div>
-    </div>
+  <header>
+    <h1>Vibe Lounge & Chill Zone 🎧</h1>
+    <p>Music lagao, memes scroll karo aur chill karo!</p>
   </header>
 
-  <!-- Workspace -->
-  <main class="max-w-7xl mx-auto p-4 md:p-6 flex-1 w-full grid lg:grid-cols-4 gap-6">
-
-    <!-- Left Controls Panel -->
-    <div class="lg:col-span-1 space-y-5 bg-slate-900/60 border border-slate-800 p-5 rounded-2xl backdrop-blur h-fit">
-      
-      <!-- Clarity / Unblur Suite -->
-      <div>
-        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-1.5">
-          <span>🔍</span> Sharpness & Clarity (Unblur)
-        </h3>
-        <div class="space-y-3">
-          <div>
-            <div class="flex justify-between text-xs text-slate-300 mb-1">
-              <span>Smart Sharpness</span>
-              <span id="sharpVal">0</span>
-            </div>
-            <input type="range" id="sharpenRange" min="0" max="5" step="1" value="0" class="w-full accent-indigo-500" onchange="applyAllEffects()">
-          </div>
-          <div>
-            <div class="flex justify-between text-xs text-slate-300 mb-1">
-              <span>Micro-Contrast</span>
-              <span id="contrastVal">100%</span>
-            </div>
-            <input type="range" id="contrastRange" min="80" max="180" value="100" class="w-full accent-indigo-500" oninput="applyAllEffects()">
-          </div>
-          <div>
-            <div class="flex justify-between text-xs text-slate-300 mb-1">
-              <span>Luminance (Brighten)</span>
-              <span id="brightVal">100%</span>
-            </div>
-            <input type="range" id="brightRange" min="80" max="160" value="100" class="w-full accent-indigo-500" oninput="applyAllEffects()">
-          </div>
-        </div>
+  <div class="container">
+    
+    <!-- Music Player Card -->
+    <div class="card">
+      <h2>🎵 Song Player</h2>
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">
+        YouTube video link ya Video ID daalo:
+      </p>
+      <div class="input-group">
+        <input type="text" id="songInput" placeholder="Paste YouTube Link or Video ID...">
+        <button onclick="playSong()">Play</button>
       </div>
-
-      <hr class="border-slate-800">
-
-      <!-- Styles & Ghibli Tone Mapping -->
-      <div>
-        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-1.5">
-          <span>🎨</span> Art & Anime Transforms
-        </h3>
-        <div class="grid grid-cols-2 gap-2">
-          <button onclick="setFilterPreset('none')" class="p-2.5 rounded-lg border border-slate-700 bg-slate-800 text-xs font-semibold hover:border-indigo-400 transition text-center">Original</button>
-          <button onclick="setFilterPreset('ghibli')" class="p-2.5 rounded-lg border border-emerald-700/60 bg-emerald-950/40 text-emerald-300 text-xs font-bold hover:border-emerald-400 transition text-center">🌿 Ghibli Tone</button>
-          <button onclick="setFilterPreset('anime_edge')" class="p-2.5 rounded-lg border border-sky-700/60 bg-sky-950/40 text-sky-300 text-xs font-bold hover:border-sky-400 transition text-center">🖌️ Anime Cel</button>
-          <button onclick="setFilterPreset('vibrant_warm')" class="p-2.5 rounded-lg border border-amber-700/60 bg-amber-950/40 text-amber-300 text-xs font-bold hover:border-amber-400 transition text-center">🌅 Sunset Film</button>
-        </div>
+      <div class="player-box">
+        <iframe id="videoPlayer" 
+          src="https://www.youtube.com/embed/jfKfPfyJRdk" 
+          allow="autoplay; encrypted-media" allowfullscreen>
+        </iframe>
       </div>
-
-      <hr class="border-slate-800">
-
-      <!-- AI Prompt Gen (Ghibli Cloud Transfer) -->
-      <div>
-        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
-          <span>🪄</span> Full AI Ghibli Remaster
-        </h3>
-        <p class="text-xs text-slate-400 mb-2">Want pure Neural Diffusion recreation? Paste a free HuggingFace Token or use instant simulated styler.</p>
-        <input type="password" id="hfToken" placeholder="hf_xxxx (Optional Free Token)" class="w-full text-xs p-2.5 bg-slate-950 border border-slate-700 rounded-lg outline-none focus:border-indigo-500 mb-2">
-        <button onclick="triggerAiGhibli()" class="w-full py-2 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-lg text-xs font-bold hover:opacity-95 transition">
-          Generate True Studio Ghibli
-        </button>
-        <span id="aiStatus" class="block text-[11px] text-amber-400 mt-1.5 hidden"></span>
-      </div>
-
-      <button onclick="resetAll()" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-400 rounded-lg transition">
-        Reset All Adjustments
-      </button>
-
     </div>
 
-    <!-- Canvas Preview Panel -->
-    <div class="lg:col-span-3 bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col items-center justify-center relative min-h-[500px] overflow-hidden checkerboard">
-      
-      <!-- Placeholder when no image loaded -->
-      <div id="dropPrompt" class="text-center p-8 border-2 border-dashed border-slate-700 rounded-2xl max-w-sm pointer-events-none">
-        <div class="text-4xl mb-3">🖼️</div>
-        <p class="font-bold text-slate-300">Upload or Drop an Image</p>
-        <p class="text-xs text-slate-500 mt-1">Supports PNG, JPG, WebP. 100% processed on your browser safely.</p>
+    <!-- Live Meme Card -->
+    <div class="card">
+      <h2>😂 Meme Feed</h2>
+      <div class="meme-box" id="memeBox">
+        <p id="memeLoading">Loading fresh meme...</p>
+        <img id="memeImg" src="" alt="Meme" style="display:none;">
+        <div id="memeTitle" class="meme-title"></div>
       </div>
-
-      <!-- Live Canvas -->
-      <canvas id="editorCanvas" class="max-w-full max-h-[70vh] rounded-lg shadow-2xl hidden"></canvas>
-
-      <!-- Processing indicator -->
-      <div id="loader" class="absolute inset-0 bg-slate-950/70 backdrop-blur flex items-center justify-center hidden">
-        <div class="text-center">
-          <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-indigo-500 border-t-transparent mb-2"></div>
-          <p class="text-xs font-medium text-slate-200" id="loaderMsg">Applying high-pass sharpness filter...</p>
-        </div>
-      </div>
-
+      <button style="margin-top: 12px; width: 100%;" onclick="fetchMeme()">Next Meme ⚡</button>
     </div>
 
-  </main>
+    <!-- AI Chill Bot Card -->
+    <div class="card">
+      <h2>✨ AI Mood Buddy</h2>
+      <div class="chat-box" id="chatBox">
+        <div class="msg bot">Yo! Kaisa mood hai aaj? Song recommendation chahiye ya bass bakchodi karni hai? 🎧</div>
+      </div>
+      <div class="input-group">
+        <input type="text" id="userInput" placeholder="Kuch bolo AI ko..." onkeypress="handleKeyPress(event)">
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+
+  </div>
 
   <script>
-    const canvas = document.getElementById('editorCanvas');
-    const ctx = canvas.getContext('2d');
-    let originalImage = null;
-    let currentPreset = 'none';
+    // 1. MUSIC PLAYER LOGIC
+    function playSong() {
+      const input = document.getElementById('songInput').value.trim();
+      let videoId = '';
 
-    function handleImage(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const img = new Image();
-        img.onload = () => {
-          originalImage = img;
-          canvas.width = img.width;
-          canvas.height = img.height;
-          document.getElementById('dropPrompt').classList.add('hidden');
-          canvas.classList.remove('hidden');
-          document.getElementById('downloadBtn').disabled = false;
-          applyAllEffects();
-        };
-        img.src = event.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function setFilterPreset(preset) {
-      currentPreset = preset;
-      applyAllEffects();
-    }
-
-    function applyAllEffects() {
-      if (!originalImage) return;
-
-      const sharpenLevel = parseInt(document.getElementById('sharpenRange').value);
-      const contrast = parseInt(document.getElementById('contrastRange').value);
-      const brightness = parseInt(document.getElementById('brightRange').value);
-
-      document.getElementById('sharpVal').innerText = sharpenLevel;
-      document.getElementById('contrastVal').innerText = contrast + '%';
-      document.getElementById('brightVal').innerText = brightness + '%';
-
-      // 1. Draw original base
-      ctx.filter = `brightness(${brightness}%) contrast(${contrast}%)`;
-      ctx.drawImage(originalImage, 0, 0);
-      ctx.filter = 'none';
-
-      // 2. Convolution Sharpen Kernel (Clarity/Unblur Algorithm)
-      if (sharpenLevel > 0) {
-        applySharpenKernel(sharpenLevel);
+      if (input.includes('watch?v=')) {
+        videoId = input.split('watch?v=')[1].split('&')[0];
+      } else if (input.includes('youtu.be/')) {
+        videoId = input.split('youtu.be/')[1].split('?')[0];
+      } else {
+        videoId = input; // If already an ID
       }
 
-      // 3. Preset Stylizations
-      if (currentPreset === 'ghibli') {
-        applyGhibliFilter();
-      } else if (currentPreset === 'anime_edge') {
-        applyAnimeCelShading();
-      } else if (currentPreset === 'vibrant_warm') {
-        applyWarmFilter();
+      if (videoId) {
+        document.getElementById('videoPlayer').src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+      } else {
+        alert('Valid YouTube URL ya Video ID paste karo!');
       }
     }
 
-    // Convolution Matrix for sharpening blurred pixels
-    function applySharpenKernel(intensity) {
-      const w = canvas.width;
-      const h = canvas.height;
-      const imgData = ctx.getImageData(0, 0, w, h);
-      const src = imgData.data;
-      const output = ctx.createImageData(w, h);
-      const dst = output.data;
+    // 2. LIVE MEME FETCH LOGIC (Public Meme API)
+    async function fetchMeme() {
+      const memeImg = document.getElementById('memeImg');
+      const memeTitle = document.getElementById('memeTitle');
+      const memeLoading = document.getElementById('memeLoading');
 
-      // Unsharp mask / Sharpen weight matrix
-      const kCenter = 1 + (4 * intensity * 0.4);
-      const kSide = -intensity * 0.1;
-
-      for (let y = 1; y < h - 1; y++) {
-        for (let x = 1; x < w - 1; x++) {
-          const idx = (y * w + x) * 4;
-          for (let c = 0; c < 3; c++) {
-            const val = 
-              src[((y - 1) * w + x) * 4 + c] * kSide +
-              src[(y * w + (x - 1)) * 4 + c] * kSide +
-              src[idx + c] * kCenter +
-              src[(y * w + (x + 1)) * 4 + c] * kSide +
-              src[((y + 1) * w + x) * 4 + c] * kSide;
-            dst[idx + c] = Math.min(255, Math.max(0, val));
-          }
-          dst[idx + 3] = src[idx + 3]; // Preserve Alpha
-        }
-      }
-      ctx.putImageData(output, 0, 0);
-    }
-
-    // Studio Ghibli Color grading & soft anime bloom
-    function applyGhibliFilter() {
-      const w = canvas.width;
-      const h = canvas.height;
-      const imgData = ctx.getImageData(0, 0, w, h);
-      const data = imgData.data;
-
-      for (let i = 0; i < data.length; i += 4) {
-        // Boost Lush Greens and Sky Blues (Characteristic of Hayao Miyazaki palettes)
-        let r = data[i];
-        let g = data[i + 1];
-        let b = data[i + 2];
-
-        // Lift soft shadows
-        r = r < 50 ? r + 15 : r;
-        g = g < 50 ? g + 20 : g;
-
-        // Enhance pastel warmth
-        data[i] = Math.min(255, r * 1.05);
-        data[i + 1] = Math.min(255, g * 1.12); // rich foliage
-        data[i + 2] = Math.min(255, b * 0.98);
-      }
-      ctx.putImageData(imgData, 0, 0);
-
-      // Soft sunlit overlay
-      ctx.save();
-      ctx.globalCompositeOperation = 'soft-light';
-      ctx.fillStyle = 'rgba(254, 240, 138, 0.25)'; // Warm anime gold
-      ctx.fillRect(0, 0, w, h);
-      ctx.restore();
-    }
-
-    // Anime Cel-shading / Outlining effect
-    function applyAnimeCelShading() {
-      const w = canvas.width;
-      const h = canvas.height;
-      const imgData = ctx.getImageData(0, 0, w, h);
-      const d = imgData.data;
-
-      // Color quantization (Posterization into distinct cell shade steps)
-      const steps = 6;
-      const stepSize = 255 / steps;
-      for (let i = 0; i < d.length; i += 4) {
-        d[i] = Math.round(d[i] / stepSize) * stepSize;
-        d[i + 1] = Math.round(d[i + 1] / stepSize) * stepSize;
-        d[i + 2] = Math.round(d[i + 2] / stepSize) * stepSize;
-      }
-      ctx.putImageData(imgData, 0, 0);
-    }
-
-    function applyWarmFilter() {
-      const w = canvas.width;
-      const h = canvas.height;
-      ctx.save();
-      ctx.globalCompositeOperation = 'color';
-      ctx.fillStyle = 'rgba(251, 146, 60, 0.2)';
-      ctx.fillRect(0, 0, w, h);
-      ctx.restore();
-    }
-
-    async function triggerAiGhibli() {
-      if (!originalImage) {
-        alert('Pehle image upload karein!');
-        return;
-      }
-      const token = document.getElementById('hfToken').value.trim();
-      const statusEl = document.getElementById('aiStatus');
-      statusEl.classList.remove('hidden');
-
-      if (!token) {
-        // Fallback: local simulated Ghibli watercolor blend
-        statusEl.innerText = 'Token nahi mila: Instant Ghibli Watercolor mode apply kiya gaya!';
-        setFilterPreset('ghibli');
-        applySharpenKernel(2);
-        return;
-      }
-
-      statusEl.innerText = 'Contacting HuggingFace Stable Diffusion Anime endpoint...';
-      document.getElementById('loader').classList.remove('hidden');
-      document.getElementById('loaderMsg').innerText = 'AI model synthesizing Studio Ghibli style...';
+      memeLoading.style.display = 'block';
+      memeLoading.innerText = 'Fetching fresh meme...';
+      memeImg.style.display = 'none';
+      memeTitle.innerText = '';
 
       try {
-        const base64Data = canvas.toDataURL('image/jpeg', 0.8).split(',')[1];
-        const res = await fetch("https://api-inference.huggingface.co/models/nitrosocke/Ghibli-Diffusion", {
-          headers: { Authorization: `Bearer ${token}` },
-          method: "POST",
-          body: JSON.stringify({ inputs: "ghibli style, beautiful lush colors, master anime masterpiece, high detail" }),
-        });
-
-        if (!res.ok) throw new Error("API call failed or model is loading.");
-        const blob = await res.blob();
-        const aiImg = new Image();
-        aiImg.onload = () => {
-          originalImage = aiImg;
-          canvas.width = aiImg.width;
-          canvas.height = aiImg.height;
-          ctx.drawImage(aiImg, 0, 0);
-          document.getElementById('loader').classList.add('hidden');
-          statusEl.innerText = '✨ AI Ghibli Remaster Complete!';
+        const res = await fetch('https://meme-api.com/gimme');
+        const data = await res.json();
+        
+        memeImg.src = data.url;
+        memeTitle.innerText = data.title;
+        memeImg.onload = () => {
+          memeLoading.style.display = 'none';
+          memeImg.style.display = 'block';
         };
-        aiImg.src = URL.createObjectURL(blob);
       } catch (err) {
-        document.getElementById('loader').classList.add('hidden');
-        statusEl.innerText = 'Notice: Model cold boot/quota hit. Switched to high-fidelity client shader.';
-        setFilterPreset('ghibli');
-        applySharpenKernel(2);
+        memeLoading.innerText = 'Meme load nahi hua, dobara click karo!';
       }
     }
 
-    function resetAll() {
-      document.getElementById('sharpenRange').value = 0;
-      document.getElementById('contrastRange').value = 100;
-      document.getElementById('brightRange').value = 100;
-      currentPreset = 'none';
-      applyAllEffects();
+    // 3. AI CHAT LOGIC (Client-side Chill Bot Simulation / API ready)
+    function handleKeyPress(e) {
+      if (e.key === 'Enter') sendMessage();
     }
 
-    function downloadImage() {
-      const link = document.createElement('a');
-      link.download = 'studiochroma-edit.png';
-      link.href = canvas.toDataURL('image/png', 1.0);
-      link.click();
+    function sendMessage() {
+      const input = document.getElementById('userInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const chatBox = document.getElementById('chatBox');
+
+      // User Message
+      const userDiv = document.createElement('div');
+      userDiv.className = 'msg user';
+      userDiv.innerText = text;
+      chatBox.appendChild(userDiv);
+      input.value = '';
+
+      // AI Response Logic (Chill responses)
+      setTimeout(() => {
+        const botDiv = document.createElement('div');
+        botDiv.className = 'msg bot';
+        botDiv.innerText = getChillResponse(text);
+        chatBox.appendChild(botDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }, 500);
+
+      chatBox.scrollTop = chatBox.scrollHeight;
     }
+
+    function getChillResponse(msg) {
+      const low = msg.toLowerCase();
+      if (low.includes('song') || low.includes('gana')) {
+        return "Lo-Fi beats ya fast hip-hop laga lo, side wale player me mast bajega!";
+      } else if (low.includes('bore') || low.includes('bored')) {
+        return "Bore mat ho bhai! 'Next Meme' click karo do-chaar solid meme dekh ke hass lo.";
+      } else if (low.includes('hi') || low.includes('hello')) {
+        return "Arre bro! Kya scene? Ekdum chill mode on rakho.";
+      } else {
+        const vibes = [
+          "Mast vibe chal rahi hai, chill karo!",
+          "Sahi baat hai, bas music chalne do tension mat lo.",
+          "Life me chill bohot zaroori hai dost ☕",
+          "Next meme dekha kya? Kaafi funny tha!"
+        ];
+        return vibes[Math.floor(Math.random() * vibes.length)];
+      }
+    }
+
+    // Initial Meme load on page open
+    window.onload = () => {
+      fetchMeme();
+    };
   </script>
 </body>
 </html>
