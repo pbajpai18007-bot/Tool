@@ -8,7 +8,7 @@
   <style>
     :root {
       --bg-dark: #0b0d17;
-      --card-bg: rgba(22, 27, 46, 0.75);
+      --card-bg: rgba(22, 27, 46, 0.85);
       --accent: #8b5cf6;
       --accent-hover: #7c3aed;
       --text: #f3f4f6;
@@ -119,23 +119,57 @@
     .status-note {
       font-size: 0.78rem;
       color: var(--text-muted);
-      margin-bottom: 10px;
-      min-height: 18px;
+      margin-bottom: 8px;
     }
 
     .video-box {
       width: 100%;
-      height: 250px;
+      height: 220px;
       border-radius: 12px;
       overflow: hidden;
       background: #000;
       border: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 12px;
     }
 
     iframe {
       width: 100%;
       height: 100%;
       border: none;
+    }
+
+    /* Track Selector */
+    .track-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-height: 180px;
+      overflow-y: auto;
+    }
+
+    .track-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: 0.2s;
+    }
+
+    .track-item:hover {
+      background: var(--accent);
+    }
+
+    .track-item span.title {
+      font-weight: 500;
+    }
+
+    .track-item span.artist {
+      color: var(--text-muted);
+      font-size: 0.75rem;
     }
 
     /* Meme Section */
@@ -219,26 +253,51 @@
 
   <header>
     <h1>Vibe Lounge & Chill Zone 🎧</h1>
-    <p>Apna manpasand song ya video search karo, desi memes dekho aur chill karo!</p>
+    <p>Apna manpasand track lagao, desi memes scroll karo aur full chill karo!</p>
   </header>
 
   <div class="container">
     
-    <!-- Video Player Card -->
+    <!-- Video & Music Card -->
     <div class="card">
-      <h2>🎬 Video Player</h2>
+      <h2>🎬 Video & Music Lounge</h2>
       <div class="input-group">
-        <input type="text" id="songQuery" placeholder="Koi bhi song search karo (e.g. Kaise hua)..." onkeypress="handleSongKey(event)">
-        <button id="searchBtn" onclick="searchVideo()">Play</button>
+        <input type="text" id="songQuery" placeholder="YouTube link ya song search karo..." onkeypress="handleSongKey(event)">
+        <button id="searchBtn" onclick="handleSearch()">Play</button>
       </div>
-      <div class="status-note" id="musicStatus">Search karke video play karein.</div>
+      <div class="status-note" id="musicStatus">Neeche kisi bhi track par click karein direct play hoga!</div>
 
       <div class="video-box">
         <iframe id="videoPlayer" 
-          src="https://www.youtube-nocookie.com/embed/jfKfPfyJRdk" 
+          src="https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=0" 
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
           allowfullscreen>
         </iframe>
+      </div>
+
+      <!-- Quick 1-Click Track Jukebox -->
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px;">🔥 Instant Chill Tracks (Tap to Play):</p>
+      <div class="track-list">
+        <div class="track-item" onclick="playVerifiedVideo('Iltsnk4eO0Q', 'Kaise Hua - Kabir Singh')">
+          <span class="title">🎵 Kaise Hua</span>
+          <span class="artist">Vishal Mishra</span>
+        </div>
+        <div class="track-item" onclick="playVerifiedVideo('BddP6PYo2gs', 'Kesariya - Brahmāstra')">
+          <span class="title">🎵 Kesariya</span>
+          <span class="artist">Arijit Singh</span>
+        </div>
+        <div class="track-item" onclick="playVerifiedVideo('n_FCrCQ6-9U', '295 - Sidhu Moosewala')">
+          <span class="title">🎵 295</span>
+          <span class="artist">Sidhu Moosewala</span>
+        </div>
+        <div class="track-item" onclick="playVerifiedVideo('cl0a3i2wFcc', 'Dil Nu - AP Dhillon')">
+          <span class="title">🎵 Dil Nu</span>
+          <span class="artist">AP Dhillon</span>
+        </div>
+        <div class="track-item" onclick="playVerifiedVideo('jfKfPfyJRdk', 'Lofi Hip Hop Radio Beats')">
+          <span class="title">🎵 Lofi Chill Beats</span>
+          <span class="artist">Lofi Girl</span>
+        </div>
       </div>
     </div>
 
@@ -246,7 +305,7 @@
     <div class="card">
       <h2>🇮🇳 Desi Memes</h2>
       <div class="meme-box" id="memeBox">
-        <p id="memeLoading">Fresh Desi Meme load ho raha hai...</p>
+        <p id="memeLoading">Fresh Desi Meme aa raha hai...</p>
         <img id="memeImg" src="" alt="Desi Meme" style="display:none;">
         <div id="memeTitle" class="meme-title"></div>
       </div>
@@ -257,7 +316,7 @@
     <div class="card">
       <h2>✨ AI Mood Buddy</h2>
       <div class="chat-box" id="chatBox">
-        <div class="msg bot">Yo Prakhar! Sab smooth set hai. Video lagao, desi memes scroll karo aur chill karo! 🎧</div>
+        <div class="msg bot">Yo Prakhar! Sab smooth chal raha hai. Gaana lagao, desi memes scroll karo aur full relax karo! 🎧</div>
       </div>
       <div class="input-group">
         <input type="text" id="userInput" placeholder="AI se kuch baat karo..." onkeypress="handleChatKey(event)">
@@ -273,95 +332,51 @@
   </footer>
 
   <script>
-    // 1. BULLETPROOF VIDEO SEARCH LOGIC (NO "VIDEO UNAVAILABLE" ERROR)
-    function handleSongKey(e) {
-      if (e.key === 'Enter') searchVideo();
-    }
-
-    async function searchVideo() {
-      const query = document.getElementById('songQuery').value.trim();
+    // 1. DIRECT VERIFIED PLAYER (NO "VIDEO UNAVAILABLE" ERROR)
+    function playVerifiedVideo(id, title) {
       const player = document.getElementById('videoPlayer');
       const status = document.getElementById('musicStatus');
-      const btn = document.getElementById('searchBtn');
+      player.src = `https://www.youtube.com/embed/${id}?autoplay=1`;
+      status.innerText = `Now Playing: ${title}`;
+    }
 
-      if (!query) {
-        alert('Pehle gaane ya video ka naam likho!');
+    function handleSongKey(e) {
+      if (e.key === 'Enter') handleSearch();
+    }
+
+    function handleSearch() {
+      const input = document.getElementById('songQuery').value.trim();
+      const player = document.getElementById('videoPlayer');
+      const status = document.getElementById('musicStatus');
+
+      if (!input) {
+        alert('Pehle koi song ka link ya naam daalo!');
         return;
       }
 
-      btn.innerText = 'Finding... ⏳';
-      status.innerText = `Searching video for "${query}"...`;
-
-      // Direct YouTube Link Detection
-      if (query.includes('youtube.com') || query.includes('youtu.be')) {
+      // Agar direct YouTube Link paste kiya ho
+      if (input.includes('youtube.com') || input.includes('youtu.be')) {
         let videoId = '';
-        if (query.includes('watch?v=')) {
-          videoId = query.split('watch?v=')[1].split('&')[0];
-        } else if (query.includes('youtu.be/')) {
-          videoId = query.split('youtu.be/')[1].split('?')[0];
+        if (input.includes('watch?v=')) {
+          videoId = input.split('watch?v=')[1].split('&')[0];
+        } else if (input.includes('youtu.be/')) {
+          videoId = input.split('youtu.be/')[1].split('?')[0];
         }
         if (videoId) {
-          player.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1`;
+          player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
           status.innerText = 'Playing directly!';
-          btn.innerText = 'Play';
           return;
         }
       }
 
-      let foundVideoId = null;
-
-      // FAST MULTI-RESOLVER: Pehle working proxy instances try karenge
-      const resolvers = [
-        `https://invidious.jing.rocks/api/v1/search?q=${encodeURIComponent(query)}&type=video`,
-        `https://inv.nadeko.net/api/v1/search?q=${encodeURIComponent(query)}&type=video`,
-        `https://api.allorigins.win/raw?url=${encodeURIComponent('https://pipedapi.kavin.rocks/search?q=' + encodeURIComponent(query) + '&filter=videos')}`
-      ];
-
-      for (const url of resolvers) {
-        try {
-          const res = await fetch(url, { signal: AbortSignal.timeout(3000) });
-          const data = await res.json();
-          
-          if (Array.isArray(data) && data[0]?.videoId) {
-            foundVideoId = data[0].videoId;
-            break;
-          } else if (data.items && data.items[0]?.url) {
-            foundVideoId = data.items[0].url.replace('/watch?v=', '');
-            break;
-          }
-        } catch (e) {
-          continue;
-        }
-      }
-
-      // Agar YouTube video ID mil gayi toh direct official embed
-      if (foundVideoId) {
-        player.src = `https://www.youtube-nocookie.com/embed/${foundVideoId}?autoplay=1`;
-        status.innerText = `Playing: ${query}`;
-      } else {
-        // GUARANTEED FALLBACK: Dailymotion Video Search Engine (Zero "Unavailable" error)
-        try {
-          const dmRes = await fetch(`https://api.dailymotion.com/videos?search=${encodeURIComponent(query)}&limit=1&fields=id,title`);
-          const dmData = await dmRes.json();
-          if (dmData.list && dmData.list.length > 0) {
-            player.src = `https://www.dailymotion.com/embed/video/${dmData.list[0].id}?autoplay=1`;
-            status.innerText = `Playing: ${dmData.list[0].title}`;
-          } else {
-            // Last resort: Clean YouTube no-cookie embed
-            player.src = `https://www.youtube-nocookie.com/embed/jfKfPfyJRdk?autoplay=1`;
-            status.innerText = `Video nahi mili, dusra keyword try karein!`;
-          }
-        } catch (dmErr) {
-          player.src = `https://www.youtube-nocookie.com/embed/jfKfPfyJRdk?autoplay=1`;
-          status.innerText = `Error loading, try another song!`;
-        }
-      }
-
-      btn.innerText = 'Play';
+      // Name search direct YouTube App / Web me open karne ka cleanest option
+      const encoded = encodeURIComponent(input);
+      window.open(`https://www.youtube.com/results?search_query=${encoded}`, '_blank');
+      status.innerText = `Searching YouTube for "${input}"...`;
     }
 
-    // 2. DESI MEME FETCH
-    const indianSubreddits = ['IndianDankMemes', 'DesiMemeCentral', 'IndianMeyMeys'];
+    // 2. DESI MEME FETCH ENGINE (RELIABLE MULTI-SUBREDDIT)
+    const indianSubs = ['IndianDankMemes', 'DesiMemeCentral', 'IndianMeyMeys', 'dankinindia'];
 
     async function fetchDesiMeme() {
       const memeImg = document.getElementById('memeImg');
@@ -373,13 +388,13 @@
       memeImg.style.display = 'none';
       memeTitle.innerText = '';
 
-      const randomSub = indianSubreddits[Math.floor(Math.random() * indianSubreddits.length)];
+      const sub = indianSubs[Math.floor(Math.random() * indianSubs.length)];
 
       try {
-        const res = await fetch(`https://meme-api.com/gimme/${randomSub}`);
+        const res = await fetch(`https://meme-api.com/gimme/${sub}`);
         const data = await res.json();
         
-        if (data.url) {
+        if (data && data.url) {
           memeImg.src = data.url;
           memeTitle.innerText = data.title || "Desi Meme";
           memeImg.onload = () => {
@@ -411,7 +426,7 @@
       }
     }
 
-    // 3. AI CHAT
+    // 3. AI CHAT LOGIC
     function handleChatKey(e) {
       if (e.key === 'Enter') sendMessage();
     }
@@ -442,17 +457,17 @@
 
     function getChillResponse(msg) {
       const low = msg.toLowerCase();
-      if (low.includes('song') || low.includes('gana') || low.includes('video')) {
-        return "Left side me search karo, video seedha play hogi bina kisi error ke!";
+      if (low.includes('song') || low.includes('gana') || low.includes('kaise hua')) {
+        return "Left side me 'Kaise Hua' ya kisi bhi track par click karo, full song turant chalega!";
       } else if (low.includes('meme') || low.includes('hasao')) {
-        return "'Next Meme' dabao, mast desi memes ready hain!";
+        return "'Next Meme' dabao, full desi memes chal rahe hain!";
       } else if (low.includes('hi') || low.includes('hello')) {
-        return "Arre brother! Kaisa chal raha hai? Full chill vibe on rakho.";
+        return "Arre brother! Kaisa scene hai? Chill zone me full enjoy karo.";
       } else {
         const vibes = [
           "Bole toh ekdum rapchik mahol hai!",
-          "Bas mast video enjoy karo aur chill raho.",
-          "Life me break aur chill utna hi zaroori hai jitna chai ☕",
+          "Bas mast gaana bajao aur bina kisi tension ke chill karo.",
+          "Life me break aur chill bohot zaroori hai dost ☕",
           "Meme check karo, kaafi funny hai!"
         ];
         return vibes[Math.floor(Math.random() * vibes.length)];
