@@ -82,7 +82,7 @@
     .input-group {
       display: flex;
       gap: 8px;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
 
     input[type="text"] {
@@ -115,6 +115,13 @@
     button:hover {
       background: var(--accent-hover);
       transform: translateY(-1px);
+    }
+
+    .status-text {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      min-height: 18px;
     }
 
     .player-box {
@@ -222,12 +229,13 @@
     <div class="card">
       <h2>🎵 Search & Play Music</h2>
       <div class="input-group">
-        <input type="text" id="songQuery" placeholder="Koi bhi song search karo (e.g. Arijit Singh Lofi)..." onkeypress="handleSongKey(event)">
-        <button onclick="searchAndPlay()">Search & Play</button>
+        <input type="text" id="songQuery" placeholder="Song ka naam likho (e.g. Arijit Singh, Dil Nu)..." onkeypress="handleSongKey(event)">
+        <button id="searchBtn" onclick="searchAndPlay()">Search & Play</button>
       </div>
+      <div class="status-text" id="musicStatus">Default: Chill Lofi Beats</div>
       <div class="player-box">
         <iframe id="videoPlayer" 
-          src="https://www.youtube.com/embed?listType=search&list=lofi%20hindi%20chill%20songs" 
+          src="https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=0" 
           allow="autoplay; encrypted-media" allowfullscreen>
         </iframe>
       </div>
@@ -269,9 +277,11 @@
       if (e.key === 'Enter') searchAndPlay();
     }
 
-    function searchAndPlay() {
+    async function searchAndPlay() {
       const query = document.getElementById('songQuery').value.trim();
       const player = document.getElementById('videoPlayer');
+      const status = document.getElementById('musicStatus');
+      const btn = document.getElementById('searchBtn');
 
       if (!query) {
         alert('Pehle koi song ka naam ya artist likho!');
@@ -288,13 +298,55 @@
         }
         if (videoId) {
           player.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+          status.innerText = "Playing pasted YouTube video...";
           return;
         }
       }
 
-      // Direct YouTube Search Embed query
-      const encodedQuery = encodeURIComponent(query);
-      player.src = `https://www.youtube.com/embed?listType=search&list=${encodedQuery}&autoplay=1`;
+      btn.innerText = 'Searching... ⏳';
+      status.innerText = `Searching for "${query}"...`;
+
+      // Search APIs (Invidious / Piped instances) to resolve exact videoId
+      const searchEndpoints = [
+        `https://inv.tux.pizza/api/v1/search?q=${encodeURIComponent(query)}&type=video`,
+        `https://invidious.nerdvpn.de/api/v1/search?q=${encodeURIComponent(query)}&type=video`,
+        `https://pipedapi.kavin.rocks/search?q=${encodeURIComponent(query)}&filter=videos`
+      ];
+
+      let foundId = null;
+      let foundTitle = "";
+
+      for (const endpoint of searchEndpoints) {
+        try {
+          const res = await fetch(endpoint, { signal: AbortSignal.timeout(4000) });
+          const data = await res.json();
+
+          if (Array.isArray(data) && data.length > 0 && data[0].videoId) {
+            foundId = data[0].videoId;
+            foundTitle = data[0].title;
+            break;
+          } else if (data.items && data.items.length > 0) {
+            const item = data.items[0];
+            foundId = item.url ? item.url.replace('/watch?v=', '') : item.id;
+            foundTitle = item.title;
+            break;
+          }
+        } catch (e) {
+          // Continue to next endpoint if current one fails/times out
+          continue;
+        }
+      }
+
+      if (foundId) {
+        player.src = `https://www.youtube.com/embed/${foundId}?autoplay=1`;
+        status.innerText = `Playing: ${foundTitle || query}`;
+      } else {
+        // Fallback: Embed search query format
+        player.src = `https://www.youtube.com/embed?autoplay=1&origin=${window.location.origin}`;
+        status.innerText = "Song search me dikkat hui, koi aur keyword daal kar dekhein.";
+      }
+
+      btn.innerText = 'Search & Play';
     }
 
     // 2. INDIAN MEME FETCH LOGIC
@@ -310,7 +362,6 @@
       memeImg.style.display = 'none';
       memeTitle.innerText = '';
 
-      // Random Indian subreddit select karna
       const randomSub = indianSubreddits[Math.floor(Math.random() * indianSubreddits.length)];
 
       try {
@@ -368,7 +419,7 @@
       chatBox.appendChild(userDiv);
       input.value = '';
 
-      // AI Response Logic
+      // AI Response
       setTimeout(() => {
         const botDiv = document.createElement('div');
         botDiv.className = 'msg bot';
@@ -383,9 +434,9 @@
     function getChillResponse(msg) {
       const low = msg.toLowerCase();
       if (low.includes('song') || low.includes('gana')) {
-        return "Left wale box me search karo na koi mast track—Lofi beats ya rap!";
+        return "Left side me bas gaane ka title type karo aur Search dabao, direct play hoga!";
       } else if (low.includes('meme') || low.includes('hasao')) {
-        return "Bhai 'Next Meme' click karo, ek se badhkar ek desi memes aayenge!";
+        return "Desi memes load ho rahe hain, 'Next Meme' dabao aur scene dekho!";
       } else if (low.includes('hi') || low.includes('hello') || low.includes('hey')) {
         return "Arre brother! Kaisa chal raha hai sab? Ekdum full vibe mode on rakho.";
       } else {
@@ -399,7 +450,6 @@
       }
     }
 
-    // Load initial meme on page load
     window.onload = () => {
       fetchDesiMeme();
     };
